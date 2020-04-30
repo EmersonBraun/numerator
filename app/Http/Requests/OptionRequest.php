@@ -8,9 +8,11 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\ResponseTrait;
 
 class OptionRequest extends FormRequest
 {
+    use ResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,7 +31,7 @@ class OptionRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required'
+            'name' => 'required'
         ];
     }
 
@@ -41,7 +43,7 @@ class OptionRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'name.required' => 'Name is required.'
+            'name.required' => 'Name is required.'
         ];
     }
 
@@ -56,9 +58,8 @@ class OptionRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
-        dd($errors);
-        // $code = JsonResponse::HTTP_UNPROCESSABLE_ENTITY;
-        // $response = $this->mountReturn('load', [], $code, $errors);
-        // throw new HttpResponseException(response()->json($response->data, $response->status, $response->headers));
+        $code = JsonResponse::HTTP_UNPROCESSABLE_ENTITY;
+        $response = $this->mountReturn('load', [], $code, $errors);
+        throw new HttpResponseException(response()->json($response->data, $response->status, $response->headers));
     }
 }

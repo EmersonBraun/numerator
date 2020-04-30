@@ -3,16 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Option extends Model
 {
-    /**
-     * When models are soft deleted, they are not actually removed from your database. 
-     * Instead, a deleted_at attribute is set on the model and inserted into the database. 
-     * If a model has a non-null deleted_at value, the model has been soft deleted
-     */
-    // use SoftDeletes;
-
     /**
      * The table associated with the model.
      *
@@ -62,4 +55,7 @@ class Option extends Model
      */
     protected $dates = [];
 
+    public function numerations() {
+        return $this->hasMany('App\Models\Numeration');
+    }
 }

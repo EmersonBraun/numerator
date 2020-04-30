@@ -12,7 +12,7 @@ use App\Traits\ResponseTrait;
 */
 class NumerationRepository extends BaseRepository
 {
-    use ResponseTrait;
+    // use ResponseTrait;
 
     protected $model;
     protected $obj = [];
@@ -31,17 +31,20 @@ class NumerationRepository extends BaseRepository
 
     public function createNexNumber($data)
     {
-        $data['sequence'] = $this->service->getNextSequence($data['option_id'], $data['year']);
-        $data['ref'] = $this->service->getNextRef($data['option_id'], $data['year']);
+        $data['year'] = isset($data['year']) ? $data['year'] : date('Y');
+        $sequence = $this->getLastSequence($data['option_id'], $data['year']);
+        $data['sequence'] = $this->service->incrementValue($sequence->data);
+        $ref = $this->getLastRef($data['option_id']);
+        $data['ref'] = $this->service->incrementValue($ref->data);
         $created = $this->create($data);
         return $created;
     }
 
     public function getLastSequence($option_id, $year=null)
     {
-        if (!$year) = date('Y');
+        if (!$year) $year = date('Y');
         try{
-            $this->obj = $this->model->where(['option_id'=> $option_id, 'year' => $year])->max('sequence');
+            $this->obj = $this->model->where(['option_id'=> $option_id])->max('sequence');
             $this->statusCode = 200;
         } catch(\Throwable $th) {
             $this->returnContent = $th->getMessage();
@@ -52,7 +55,7 @@ class NumerationRepository extends BaseRepository
 
     public function getLastRef($option_id, $year=null)
     {
-        if (!$year) = date('Y');
+        if (!$year) $year = date('Y');
         try{
             $this->obj = $this->model->where(['option_id'=> $option_id, 'year' => $year])->max('ref');
             $this->statusCode = 200;

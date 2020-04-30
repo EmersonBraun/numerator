@@ -8,9 +8,11 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Traits\ResponseTrait;
 
 class NumerationRequest extends FormRequest
 {
+    use ResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,7 +31,9 @@ class NumerationRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required'
+            'option_id' => 'required',
+            'ip' => 'required',
+            'description' => 'required'
         ];
     }
 
@@ -38,12 +42,14 @@ class NumerationRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
-        return [
-            // 'name.required' => 'Name is required.',
-        ];
-    }
+    // public function messages()
+    // {
+    //     return [
+    //         'option_id.required' => 'option_id is required.',
+    //         'ip.required' => 'ip is required.',
+    //         'description.required' => 'description is required.',
+    //     ];
+    // }
 
     /**
      * Handle a failed validation attempt.
