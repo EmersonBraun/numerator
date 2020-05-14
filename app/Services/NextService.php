@@ -6,6 +6,6 @@ class NextService
     public function incrementValue($currentValue)
     {
         if (!$currentValue) return 1;
-        return $currentValue++;
+        return $currentValue += 1;
     }
 }

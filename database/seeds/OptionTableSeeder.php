@@ -13,7 +13,9 @@ class OptionTableSeeder extends Seeder
      */
     public function run()
     {
-        $amount = 10;
-        factory(Option::class, $amount)->create();
+        foreach (config('options') as $option) {
+            $option['created_at'] = date('Y-m-d H:i:s');
+            Option::create($option);
+        }
     }
 }

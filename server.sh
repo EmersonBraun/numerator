@@ -15,14 +15,14 @@ function InitServer () {
     docker-compose up -d nginx workspace postgres
     echo -e "${GREEN}(Laravel) Instal dependences${NC}"
     docker-compose exec workspace composer install
+    echo -e "${GREEN}(Laravel) Generate key${NC}"
+    docker-compose exec workspace php artisan key:generate
     echo -e "${GREEN}(Laravel) Clean cache${NC}"
     docker-compose exec workspace php artisan config:cache
     echo -e "${GREEN}(Laravel) Run Migrations${NC}"
     docker-compose exec workspace php artisan migrate
     echo -e "${GREEN}(Laravel) Run Seeders${NC}"
     docker-compose exec workspace php artisan db:seed
-    echo -e "${GREEN}(Laravel) Generate key${NC}"
-    docker-compose exec workspace php artisan key:generate
     echo -e "${GREEN}Everything is ready${NC}"
 }
 

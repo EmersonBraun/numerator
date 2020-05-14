@@ -13,7 +13,7 @@ class NumerationTableSeeder extends Seeder
      */
     public function run()
     {
-        $amount = 10;
+        $amount = 100;
         factory(Numeration::class, $amount)->create();
     }
 }

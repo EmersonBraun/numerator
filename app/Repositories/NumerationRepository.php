@@ -34,7 +34,7 @@ class NumerationRepository extends BaseRepository
         $data['year'] = isset($data['year']) ? $data['year'] : date('Y');
         $sequence = $this->getLastSequence($data['option_id'], $data['year']);
         $data['sequence'] = $this->service->incrementValue($sequence->data);
-        $ref = $this->getLastRef($data['option_id']);
+        $ref = $this->getLastRef($data['option_id'], $data['year']);
         $data['ref'] = $this->service->incrementValue($ref->data);
         $created = $this->create($data);
         return $created;
@@ -55,6 +55,7 @@ class NumerationRepository extends BaseRepository
 
     public function getLastRef($option_id, $year=null)
     {
+        $sql = $this->model->where(['option_id'=> $option_id, 'year' => $year])->max('ref');
         if (!$year) $year = date('Y');
         try{
             $this->obj = $this->model->where(['option_id'=> $option_id, 'year' => $year])->max('ref');
